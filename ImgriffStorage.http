@@ -1,0 +1,6 @@
+@ImgriffStorage_HostAddress = http://localhost:5239
+
+GET {{ImgriffStorage_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

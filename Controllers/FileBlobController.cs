@@ -23,7 +23,6 @@ namespace ImgriffStorage.Controllers
             }
             String bucketname = _hashService.HashString(fileModel.UserId + fileModel.UserEmail).Substring(0, 60);
             await _blobService.UploadFileAsync(bucketname, fileModel.formFile);
-            var url = await _blobService.GetFileUrlAsync(bucketname, fileModel.formFile.FileName);
             return await GetUrl(fileModel.formFile.FileName, fileModel.UserEmail, fileModel.UserId);
         }
 

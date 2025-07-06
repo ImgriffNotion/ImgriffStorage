@@ -21,6 +21,7 @@ namespace ImgriffStorage.Controllers
             {
                 return Ok(new { prhase = "model cannot be null" });
             }
+            Console.WriteLine("WORK HERE");
             String bucketname = _hashService.HashString(fileModel.UserId + fileModel.UserEmail).Substring(0, 60);
             await _blobService.UploadFileAsync(bucketname, fileModel.formFile);
             return await GetUrl(fileModel.formFile.FileName, fileModel.UserEmail, fileModel.UserId);

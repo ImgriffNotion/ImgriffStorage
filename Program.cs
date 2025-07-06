@@ -12,6 +12,24 @@ namespace ImgriffStorage
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                "AllowFrontend",
+                policy =>
+                {
+                    policy
+                        .WithOrigins(
+                           "https://notion-back.azurewebsites.net",
+                           "https://green-field-0f96be703.2.azurestaticapps.net"
+                        )
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                }
+            );
+            });
+
             builder.Services.Configure<AzureBlobSettings>(builder.Configuration.GetSection("AzureBlobSettings"));
 
             builder.Services.AddControllers();

@@ -16,15 +16,22 @@ namespace ImgriffStorage.Controllers
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(FormFileModel fileModel)
         {
-            if (fileModel == null || fileModel.formFile == null || 
-                String.IsNullOrWhiteSpace(fileModel.UserEmail) || String.IsNullOrEmpty(fileModel.UserId))
+            try
             {
-                return Ok(new { prhase = "model cannot be null" });
+                if (fileModel == null || fileModel.formFile == null ||
+                    String.IsNullOrWhiteSpace(fileModel.UserEmail) || String.IsNullOrEmpty(fileModel.UserId))
+                {
+                    return Ok(new { prhase = "model cannot be null" });
+                }
+                Console.WriteLine("WORK HERE");
+                String bucketname = _hashService.HashString(fileModel.UserId + fileModel.UserEmail).Substring(0, 60);
+                await _blobService.UploadFileAsync(bucketname, fileModel.formFile);
+                return await GetUrl(fileModel.formFile.FileName, fileModel.UserEmail, fileModel.UserId);
             }
-            Console.WriteLine("WORK HERE");
-            String bucketname = _hashService.HashString(fileModel.UserId + fileModel.UserEmail).Substring(0, 60);
-            await _blobService.UploadFileAsync(bucketname, fileModel.formFile);
-            return await GetUrl(fileModel.formFile.FileName, fileModel.UserEmail, fileModel.UserId);
+            catch (Exception ex)
+            {
+                return Ok(new { url = ex.Message });
+            }
         }
 
         [HttpGet("get-url")]

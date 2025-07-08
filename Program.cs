@@ -21,7 +21,8 @@ namespace ImgriffStorage
                     policy
                         .WithOrigins(
                            "https://notion-back.azurewebsites.net",
-                           "https://green-field-0f96be703.2.azurestaticapps.net"
+                           "https://green-field-0f96be703.2.azurestaticapps.net",
+                           "http://127.0.0.1:5500"
                         )
                         .AllowAnyHeader()
                         .AllowAnyMethod()
@@ -53,7 +54,7 @@ namespace ImgriffStorage
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("AllowFrontend");
             app.UseAuthorization();
 
             
